@@ -1,0 +1,15 @@
+{
+  "data_dir": "/var/consul",
+  "bind_addr": "{{ consul_bind_address }}",
+  "client_addr": "127.0.0.1 {{ consul_bind_address }}",
+{% if consul_server %}
+  "server": true,
+{% if consul_bootstrap_expect is defined %}
+  "bootstrap_expect": {{ consul_bootstrap_expect }},
+{% endif %}
+{% endif %}
+  "retry_join": {{ consul_retry_join | to_json }},
+  "rejoin_after_leave": {{ consul_rejoin_after_leave | to_json }},
+  "encrypt": "{{ consul_encrypt }}",
+  "ui": {{ consul_ui | to_json }}
+}

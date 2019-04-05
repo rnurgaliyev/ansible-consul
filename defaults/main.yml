@@ -1,0 +1,8 @@
+---
+
+consul_bind_address: "{{ ansible_default_ipv4.address }}"
+consul_rejoin_after_leave: True
+consul_retry_join: []
+consul_server: False
+consul_services: []
+consul_ui: True

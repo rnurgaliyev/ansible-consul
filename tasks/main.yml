@@ -1,0 +1,59 @@
+---
+
+- name: Check if consul is installed
+  stat:
+    path: /usr/sbin/consul
+  register: consul_stat
+
+- name: Install unzip
+  apt:
+    name: unzip
+    state: present
+
+- name: Download consul to temporary path
+  get_url:
+    url: https://releases.hashicorp.com/consul/1.4.4/consul_1.4.4_linux_amd64.zip
+    checksum: "sha256:d3bdf9817c7de9d83426d8c421eb3f37bf82c03c97860ef78fb56e148c4a9765"
+    dest: /tmp/consul.zip
+    force: True
+  when: not consul_stat.stat.exists
+
+- name: Unpack consul binary
+  unarchive:
+    remote_src: True
+    src: /tmp/consul.zip
+    dest: /usr/sbin
+    mode: 0755
+  when: not consul_stat.stat.exists
+  notify: restart consul
+
+- name: Create consul configuration directory
+  file:
+    dest: /etc/consul.d
+    state: directory
+
+- name: Install consul systemd service
+  copy:
+    src: consul.service
+    dest: "/etc/systemd/system/consul.service"
+  notify:
+    - reload systemd
+    - restart consul
+
+- name: Install consul configuration file
+  template:
+    src: config.json.j2
+    dest: "/etc/consul.d/config.json"
+  notify: restart consul
+
+- name: Configure consul services
+  template:
+    src: services.json.j2
+    dest: "/etc/consul.d/services.json"
+  notify: restart consul
+
+- name: Enable and start consul agent
+  service:
+    name: consul.service
+    enabled: True
+  notify: restart consul
