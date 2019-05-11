@@ -1,0 +1,15 @@
+---
+
+- name: Install consul systemd service
+  template:
+    src: consul.service
+    dest: "/etc/systemd/system/consul.service"
+  notify:
+    - reload systemd
+    - restart consul
+
+- name: Enable and start consul agent
+  service:
+    name: consul.service
+    enabled: True
+  notify: restart consul

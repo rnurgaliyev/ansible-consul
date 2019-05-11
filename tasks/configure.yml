@@ -1,0 +1,13 @@
+---
+
+- name: Create consul configuration directory
+  file:
+    dest: "{{ consul_configuration_path }}"
+    state: directory
+
+- name: Install consul configuration
+  copy:
+    content: "{{ item.configuration | to_json }}"
+    dest: "{{ consul_configuration_path }}/{{ item.name }}.json"
+  loop: "{{ consul_configuration }}"
+  notify: restart consul
