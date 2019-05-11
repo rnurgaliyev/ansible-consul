@@ -3,6 +3,7 @@
 - name: restart consul
   service:
     name: consul
+    enabled: True
     state: restarted
 
 - name: reload systemd
