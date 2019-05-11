@@ -1,0 +1,25 @@
+---
+
+- name: Get installed consul version
+  shell: >
+    {{ consul_install_path }}/consul --version | head -n 1 | sed -E 's/^Consul\s+v([0-9.]+)$/\1/g'
+  changed_when: False
+  ignore_errors: True
+  register: consul_installed_version
+  check_mode: False
+
+- set_fact:
+    consul_installed_version: "{{ consul_installed_version.stdout }}"
+
+- name: Get latest consul version
+  uri:
+    url: "https://checkpoint-api.hashicorp.com/v1/check/consul"
+  ignore_errors: True
+  register: consul_version_response
+  when: consul_install_version == 'latest'
+
+- set_fact:
+    consul_install_version: "{{ consul_version_response.json['current_version'] }}"
+  when: 
+    - consul_version_response.json is defined
+    - consul_version_response.json['current_version'] is defined

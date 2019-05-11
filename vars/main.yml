@@ -1,0 +1,6 @@
+---
+
+consul_install_path: "/usr/bin"
+consul_configuration_path: "/etc/consul.d"
+consul_hashicorp_gpg_key_id: "51852D87348FFC4C"
+consul_hashicorp_gpg_key_fingerprint: "91A6E7F85D05C65630BEF18951852D87348FFC4C"

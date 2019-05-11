@@ -1,12 +1,10 @@
 [Unit]
 Description=Consul Agent
-StartLimitIntervalSec=0
 
 [Service]
 User=root
 Restart=always
-RestartSec=5
-ExecStart=/usr/sbin/consul agent -config-dir=/etc/consul.d
+ExecStart={{ consul_install_path }}/consul agent -config-dir={{ consul_configuration_path }}
 
 [Install]
 WantedBy=multi-user.target
