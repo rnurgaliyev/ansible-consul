@@ -7,9 +7,3 @@
   notify:
     - reload systemd
     - restart consul
-
-- name: Enable and start consul agent
-  service:
-    name: consul.service
-    enabled: True
-  notify: restart consul
