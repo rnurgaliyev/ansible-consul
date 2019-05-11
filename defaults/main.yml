@@ -7,6 +7,10 @@
 consul_install: True
 consul_install_version: latest
 
+# Note if you wish to install specific version, not to include 'v' in version
+# number. For example:
+#consul_install_version: 1.4.4
+
 # consul_configure controls if consul should be configured.
 consul_configure: True
 
