@@ -2,17 +2,17 @@
 
 - name: Check installed and desired consul versions
   include_tasks: check.yml
-  when: consul_install
+  when: consul_install|bool
 
 - name: Install consul
   include_tasks: install.yml
   when:
-    - consul_install
+    - consul_install|bool
     - consul_installed_version != consul_install_version
 
 - name: Configure consul
   include_tasks: configure.yml
-  when: consul_configure
+  when: consul_configure|bool
 
 - name: Configure consul agent service
   include_tasks: service.yml
